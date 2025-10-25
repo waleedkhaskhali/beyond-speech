@@ -1,0 +1,366 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  FAMILY
+  SLP
+  OT
+  PT
+  OTA
+  PTA
+  SCHOOL
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  PENDING_VERIFICATION
+  SUSPENDED
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum ServiceType {
+  SPEECH_THERAPY
+  OCCUPATIONAL_THERAPY
+  PHYSICAL_THERAPY
+  LITERACY_SUPPORT
+  GROUP_SESSION
+  EVALUATION
+}
+
+model User {
+  id                String      @id @default(cuid())
+  email             String      @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  role              UserRole
+  status            UserStatus  @default(PENDING_VERIFICATION)
+  emailVerified     Boolean     @default(false)
+  emailVerifiedAt   DateTime?
+  profileImage      String?
+  dateOfBirth       DateTime?
+  address           Json?
+  emergencyContact  Json?
+  preferences       Json?
+  stripeCustomerId  String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  providerProfile   ProviderProfile?
+  familyProfile     FamilyProfile?
+  schoolProfile     SchoolProfile?
+  appointments      Appointment[]
+  sentMessages      Message[]     @relation("MessageSender")
+  receivedMessages  Message[]     @relation("MessageReceiver")
+  notifications     Notification[]
+  payments          Payment[]
+  documents         Document[]
+  reviews           Review[]
+  receivedReviews   Review[]      @relation("ReviewReceiver")
+
+  @@map("users")
+}
+
+model ProviderProfile {
+  id                String      @id @default(cuid())
+  userId            String      @unique
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Professional Info
+  licenseNumber     String
+  licenseState      String
+  specialties       String[]
+  certifications    String[]
+  experience        Int         // years of experience
+  education         Json?
+  bio               String?
+  hourlyRate        Float?
+  
+  // Availability
+  availability      Json?
+  timezone          String      @default("America/New_York")
+  remoteAvailable   Boolean     @default(true)
+  inPersonAvailable Boolean     @default(false)
+  serviceAreas      String[]
+  
+  // Professional Details
+  languages         String[]
+  ageGroups         String[]
+  insuranceAccepted Boolean     @default(false)
+  privatePayOnly    Boolean     @default(false)
+  
+  // Verification
+  licenseVerified   Boolean     @default(false)
+  backgroundCheck   Boolean     @default(false)
+  references        Json?
+  
+  // Stripe
+  stripeAccountId   String?
+  onboardingComplete Boolean    @default(false)
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  appointments      Appointment[]
+  reviews           Review[]
+
+  @@map("provider_profiles")
+}
+
+model FamilyProfile {
+  id                String      @id @default(cuid())
+  userId            String      @unique
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Family Info
+  primaryContact    Boolean     @default(true)
+  relationship      String?     // Parent, Guardian, etc.
+  preferredLanguage String?
+  culturalBackground String?
+  
+  // Client Info (if different from user)
+  clientName        String?
+  clientDateOfBirth DateTime?
+  clientNeeds       String[]
+  clientGoals       String?
+  previousTherapy   Boolean     @default(false)
+  previousTherapist String?
+  
+  // Preferences
+  preferredProvider String[]    // Provider IDs
+  schedulingPrefs   Json?
+  communicationPrefs Json?
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  appointments      Appointment[]
+
+  @@map("family_profiles")
+}
+
+model SchoolProfile {
+  id                String      @id @default(cuid())
+  userId            String      @unique
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // School Info
+  schoolName        String
+  schoolType        String      // Public, Private, Charter, etc.
+  district          String?
+  address           Json?
+  contactPerson     String?
+  contactTitle      String?
+  
+  // Needs
+  serviceNeeds      String[]
+  studentCount      Int?
+  ageRange          String?
+  specialPrograms   String[]
+  
+  // Requirements
+  backgroundCheck   Boolean     @default(true)
+  liabilityInsurance Boolean   @default(true)
+  contractTerms     Json?
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  appointments      Appointment[]
+
+  @@map("school_profiles")
+}
+
+model Appointment {
+  id                String            @id @default(cuid())
+  clientId          String
+  client            User              @relation(fields: [clientId], references: [id])
+  providerId        String
+  provider          ProviderProfile   @relation(fields: [providerId], references: [id])
+  familyProfileId   String?
+  familyProfile     FamilyProfile?    @relation(fields: [familyProfileId], references: [id])
+  schoolProfileId   String?
+  schoolProfile     SchoolProfile?    @relation(fields: [schoolProfileId], references: [id])
+  
+  // Appointment Details
+  serviceType       ServiceType
+  title             String
+  description       String?
+  startTime         DateTime
+  endTime           DateTime
+  duration          Int               // in minutes
+  status            AppointmentStatus @default(SCHEDULED)
+  
+  // Location
+  isRemote          Boolean           @default(false)
+  location          String?
+  meetingLink       String?
+  
+  // Session Details
+  notes             String?
+  goals             String?
+  materials         String[]
+  homework          String?
+  
+  // Payment
+  hourlyRate        Float
+  totalAmount       Float
+  paymentStatus     PaymentStatus     @default(PENDING)
+  
+  // Cancellation
+  cancelledAt       DateTime?
+  cancellationReason String?
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  // Relations
+  documents         Document[]
+  messages          Message[]
+
+  @@map("appointments")
+}
+
+model Message {
+  id                String      @id @default(cuid())
+  appointmentId     String?
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
+  senderId          String
+  sender            User        @relation("MessageSender", fields: [senderId], references: [id])
+  receiverId        String
+  receiver          User        @relation("MessageReceiver", fields: [receiverId], references: [id])
+  
+  content           String
+  messageType       String      @default("text") // text, image, document, system
+  attachments       String[]
+  isRead            Boolean     @default(false)
+  readAt            DateTime?
+  
+  createdAt         DateTime    @default(now())
+
+  @@map("messages")
+}
+
+model Notification {
+  id                String      @id @default(cuid())
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  
+  title             String
+  message           String
+  type              String      // appointment, payment, system, etc.
+  isRead            Boolean     @default(false)
+  readAt            DateTime?
+  actionUrl         String?
+  
+  createdAt         DateTime    @default(now())
+
+  @@map("notifications")
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  appointmentId     String?
+  
+  amount            Float
+  currency          String        @default("usd")
+  status            PaymentStatus @default(PENDING)
+  stripePaymentId   String?
+  stripeChargeId    String?
+  
+  description       String?
+  metadata          Json?
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@map("payments")
+}
+
+model Document {
+  id                String      @id @default(cuid())
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  appointmentId     String?
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
+  
+  filename          String
+  originalName      String
+  filePath          String
+  fileSize          Int
+  mimeType          String
+  category          String      // assessment, report, homework, etc.
+  description       String?
+  
+  createdAt         DateTime    @default(now())
+
+  @@map("documents")
+}
+
+model Review {
+  id                String      @id @default(cuid())
+  appointmentId     String?
+  reviewerId        String
+  reviewer          User        @relation(fields: [reviewerId], references: [id])
+  revieweeId        String
+  reviewee          User        @relation("ReviewReceiver", fields: [revieweeId], references: [id])
+  providerId        String?
+  provider          ProviderProfile? @relation(fields: [providerId], references: [id])
+  
+  rating            Int         // 1-5
+  comment           String?
+  categories        Json?       // {communication: 5, professionalism: 4, etc.}
+  
+  isPublic          Boolean     @default(true)
+  isVerified        Boolean     @default(false)
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@map("reviews")
+}
+
+model SystemSettings {
+  id                String      @id @default(cuid())
+  key               String      @unique
+  value             Json
+  description       String?
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@map("system_settings")
+}

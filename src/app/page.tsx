@@ -1,103 +1,691 @@
+"use client";
+
+import React, { useState, useRef } from "react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Check, Calendar, MapPin, Video, Globe2, ShieldCheck } from "lucide-react";
+import { ServicesModern } from "@/components/ui/serviceModern";
+import { SiteFooter } from "@/components/ui/siteFooter";
+import emailjs from '@emailjs/browser';
 
-export default function Home() {
+/** Minimal, professional, playful */
+export default function BeyondSpeechLanding() {
+  const [role, setRole] = useState<"family" | "slp" | "school" | "ot" | "pt" | "ota" | "pta">("family");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const templateParams = {
+        role,
+        name: formData.get('name') as string,
+        email: formData.get('email') as string,
+        phone: formData.get('phone') as string,
+        message: formData.get('message') as string,
+        timestamp: new Date().toLocaleString(),
+        // Role-specific fields
+        ...(role === 'family' && {
+          clientName: formData.get('clientName') as string,
+          age: formData.get('age') as string,
+          goals: formData.get('goals') as string,
+        }),
+        ...(role === 'slp' && {
+          state: formData.get('state') as string,
+          availability: formData.get('availability') as string,
+          expertise: formData.get('expertise') as string,
+        }),
+        ...(role === 'school' && {
+          orgName: formData.get('orgName') as string,
+          need: formData.get('need') as string,
+        }),
+      };
+
+      // Send email using EmailJS
+      await emailjs.send(
+        'service_jwl18ey', // Service ID
+        'template_1uzi0bf', // Template ID
+        templateParams,
+        'NA5icxSu2RS9jACcV' // Public Key
+      );
+
+      setSubmitStatus('success');
+      // Reset form
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+      setRole('family');
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-yellow-50 text-neutral-900">
+      <SiteHeader />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+     <section id="home" className="relative overflow-hidden bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100">
+      {/* Decorative blobs for liquid effect */}
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-purple-300/50 blur-3xl animate-pulse" />
+        <div className="absolute top-1/2 -right-32 h-80 w-80 rounded-full bg-pink-300/50 blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-yellow-300/50 blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
+      </div>
+      {/* Parent with known height + relative positioning */}
+      <div className="relative h-[60vh] min-h-[420px] w-full">
+        {/* OPTIONAL: lighten the photo a bit; lower opacity so you still see it */}
+        <div className="absolute inset-0 bg-white/10" />
+        
+        {/* Content on top */}
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-4 text-center">
+          <div>
+            <h1 className="font-heading text-4xl font-semibold tracking-tight sm:text-5xl">
+              Expert Speech-Language Therapy
+               <span className="block text-brand">That Fits Your Life</span>
+            </h1>
+          <p className="font-body mx-auto mt-4 max-w-2xl text-lg text-neutral-700">
+      We connect families with skilled, culturally-responsive SLPs — and partner with providers seeking flexible, meaningful caseloads.
+    </p>
+
+    {/* ✅ Re-added CTA buttons */}
+<div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+  <a href="#contact">
+    <Button variant="brand" size="lg" className="shadow-xl hover:shadow-2xl hover:scale-110 transition-all">Find a Provider</Button>
+  </a>
+  <a href="#contact">
+    <Button variant="accent" size="lg" className="shadow-xl hover:shadow-2xl hover:scale-110 transition-all">Join Our Network</Button>
+  </a>
+</div>
+
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </div>
+    </section>
+
+      {/* HOW IT WORKS — clean steps, no borders/cards */}
+ <section aria-labelledby="how" className="relative overflow-hidden bg-gradient-to-br from-yellow-100 via-orange-50 to-pink-100">
+  {/* Decorative blobs */}
+  <div className="pointer-events-none absolute inset-0 opacity-30">
+    <div className="absolute top-10 -right-20 h-64 w-64 rounded-full bg-orange-200/60 blur-3xl" />
+    <div className="absolute -bottom-10 -left-20 h-64 w-64 rounded-full bg-yellow-200/60 blur-3xl" />
+  </div>
+  <div className="mx-auto max-w-6xl px-4 py-14 sm:py-16">
+    <h2 id="how" className="font-heading text-3xl font-semibold tracking-tight text-center">
+      How it works
+    </h2>
+
+    <ol className="mx-auto mt-10 grid max-w-3xl gap-8 sm:grid-cols-3">
+      <Step n={1} color="brand" title="Tell us your needs" desc="Share your goals, schedule, and preferences with us." />
+      <Step n={2} color="accent" title="We find your match" desc="Get paired with a licensed, vetted SLP who fits your needs." />
+      <Step n={3} color="success" title="Start your journey" desc="Begin sessions on your schedule — remote or in-person." />
+    </ol>
+  </div>
+</section>
+
+
+      {/* FAMILIES — minimal content + illustration */}
+      <section id="families" className="relative overflow-hidden bg-gradient-to-br from-pink-100 via-rose-100 to-purple-100">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none absolute inset-0 opacity-30">
+          <div className="absolute -top-16 left-1/4 h-80 w-80 rounded-full bg-pink-200/60 blur-3xl" />
+          <div className="absolute bottom-20 -right-16 h-72 w-72 rounded-full bg-purple-200/60 blur-3xl" />
+        </div>
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <div className="order-2 md:order-1">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight">For Families & Individuals</h2>
+              <p className="font-body mt-3 text-neutral-600">
+                Quality speech-language support tailored to your unique needs. We match you with experienced providers who understand your goals and cultural background.
+              </p>
+              <ul className="mt-6 grid gap-2 text-sm text-neutral-800">
+                {[
+                  "Expert SLPs matched to your needs",
+                  "Remote & in-person options available",
+                  "Flexible scheduling that works for you",
+                  "Culturally-responsive care",
+                  "Children, teens, and adults welcome",
+                  "Private-pay with superbill support",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <Check className="mt-0.5 h-4 w-4 text-success" /> {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-2xl md:order-2">
+              <Image src="/illustration-families.svg" alt="" fill className="object-contain" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SLPS — minimal content + illustration */}
+      <section id="slps" className="relative overflow-hidden bg-gradient-to-br from-purple-100 via-indigo-100 to-blue-100">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none absolute inset-0 opacity-30">
+          <div className="absolute top-20 -left-16 h-72 w-72 rounded-full bg-indigo-200/60 blur-3xl" />
+          <div className="absolute -bottom-16 right-1/4 h-80 w-80 rounded-full bg-blue-200/60 blur-3xl" />
+        </div>
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+              <Image src="/illustration-slps.svg" alt="" fill className="object-contain" />
+            </div>
+            <div>
+              <h2 className="font-heading text-3xl font-semibold tracking-tight">For SLP Providers</h2>
+              <p className="font-body mt-3 text-neutral-600">
+                Join our growing network of speech-language pathologists. Build a caseload that aligns with your expertise, values, and schedule preferences.
+              </p>
+              <ul className="mt-6 grid gap-2 text-sm text-neutral-800">
+                {[
+                  "Quality client referrals matched to your skills",
+                  "Choose your schedule: days, evenings, weekends",
+                  "Remote and in-person opportunities",
+                  "Competitive compensation & fair rates",
+                  "Supportive community & professional development",
+                  "We handle admin, marketing & client matching",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                <Check className="mt-0.5 h-4 w-4 text-accent" /> {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* OG CAMP — small, clean block */}
+      <section id="og-camp" className="relative overflow-hidden bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none absolute inset-0 opacity-30">
+          <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-cyan-200/60 blur-3xl" />
+          <div className="absolute bottom-10 left-10 h-64 w-64 rounded-full bg-teal-200/60 blur-3xl" />
+        </div>
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <div>
+              <h2 className="font-heading text-3xl font-semibold tracking-tight">Special Programs</h2>
+              <p className="font-body mt-3 text-neutral-600">
+                Beyond one-on-one therapy, we offer specialized small-group programs like OG Camp — structured literacy support using Orton-Gillingham methods for K-5 learners.
+              </p>
+              <div className="mt-6 grid gap-3 text-sm text-neutral-800">
+                <p className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-brand" />
+                  Rolling enrollment throughout the year
+                </p>
+                <p className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-success" />
+                  Remote & in-person options available
+                </p>
+                <p className="flex items-center gap-2">
+                  <Video className="h-4 w-4 text-info" />
+                  Small groups for personalized attention
+                </p>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+              <Image src="/illustration-og.svg" alt="" fill className="object-contain" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* RATES — simple, honest */}
+    <ServicesModern />
+      {/* CONTACT — slimmer form, mobile-first */}
+  <section id="contact" className="relative overflow-hidden bg-gradient-to-br from-teal-100 via-emerald-100 to-green-100">
+  {/* Decorative blobs */}
+  <div className="pointer-events-none absolute inset-0 opacity-30">
+    <div className="absolute top-20 -left-20 h-80 w-80 rounded-full bg-emerald-200/60 blur-3xl" />
+    <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-teal-200/60 blur-3xl" />
+  </div>
+  <div className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
+    <div className="text-center">
+      <h2 className="font-heading text-3xl font-semibold tracking-tight">
+        Get Started Today
+      </h2>
+      <p className="font-body mx-auto mt-3 max-w-xl text-neutral-600">
+        Whether you're seeking services or looking to join our provider network, we'd love to connect. We'll respond within 1–2 business days.
+      </p>
+    </div>
+
+    <form ref={formRef} onSubmit={handleSubmit} className="mt-10 rounded-2xl bg-white p-8 shadow-xl ring-2 ring-purple-200 hover:ring-purple-300 transition-all">
+      {/* Role selector */}
+      <div className="mb-6">
+        <label htmlFor="role" className="font-body text-sm font-medium">
+          I am a…
+        </label>
+        <select
+          id="role"
+          className="mt-2 w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-brand focus:ring-2 focus:ring-brand/30"
+          value={role}
+          onChange={(e) => setRole(e.target.value as any)}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          <option value="family">Parent/Guardian</option>
+          <option value="slp">Speech-Language Pathologist</option>
+          <option value="ot">Occupational Therapist</option>
+          <option value="pt">Physical Therapist</option>
+          <option value="ota">Occupational Therapist Assistant</option>
+          <option value="pta">Physical Therapist Assistant</option>
+          <option value="school">School / Organization</option>
+        </select>
+      </div>
+
+      {/* Contact details */}
+      <div className="grid gap-6 sm:grid-cols-2">
+        <InputField id="name" label="Full Name" placeholder="Your name" />
+        <InputField
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="name@example.com"
+        />
+        <div className="sm:col-span-2">
+          <InputField id="phone" label="Phone" placeholder="(###) ###-####" />
+        </div>
+      </div>
+
+      {/* Conditional sections */}
+      {role === "family" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            Tell Us About Your Needs
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <InputField
+              id="clientName"
+              label="Client Name"
+              placeholder="Name of person receiving services"
+            />
+            <InputField id="age" label="Age" placeholder="e.g., 6 or Adult" />
+          </div>
+          <TextareaField
+            id="goals"
+            label="What are you looking for?"
+            placeholder="E.g., speech therapy for articulation, feeding therapy, literacy support, etc. Include any scheduling or cultural preferences."
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        </div>
+      )}
+
+      {role === "slp" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            Provider Information
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <InputField
+              id="state"
+              label="Licensed State(s)"
+              placeholder="e.g., NY, NJ, CA"
+            />
+            <InputField
+              id="availability"
+              label="Preferred Schedule"
+              placeholder="e.g., weekdays 4–7pm, weekends"
+            />
+          </div>
+          <TextareaField
+            id="expertise"
+            label="Your Expertise & Interests"
+            placeholder="Tell us about your specialties (e.g., pediatric language, AAC, fluency, feeding), populations you prefer, and if you're interested in remote or in-person work."
+          />
+        </div>
+      )}
+
+      {role === "ot" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            Occupational Therapist Information
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <InputField
+              id="state"
+              label="Licensed State(s)"
+              placeholder="e.g., NY, NJ, CA"
+            />
+            <InputField
+              id="availability"
+              label="Preferred Schedule"
+              placeholder="e.g., weekdays 4–7pm, weekends"
+            />
+          </div>
+          <TextareaField
+            id="expertise"
+            label="Your Expertise & Interests"
+            placeholder="Tell us about your specialties (e.g., pediatric OT, sensory integration, fine motor, feeding), populations you prefer, and if you're interested in remote or in-person work."
+          />
+        </div>
+      )}
+
+      {role === "pt" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            Physical Therapist Information
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <InputField
+              id="state"
+              label="Licensed State(s)"
+              placeholder="e.g., NY, NJ, CA"
+            />
+            <InputField
+              id="availability"
+              label="Preferred Schedule"
+              placeholder="e.g., weekdays 4–7pm, weekends"
+            />
+          </div>
+          <TextareaField
+            id="expertise"
+            label="Your Expertise & Interests"
+            placeholder="Tell us about your specialties (e.g., pediatric PT, orthopedics, neurological, sports therapy), populations you prefer, and if you're interested in remote or in-person work."
+          />
+        </div>
+      )}
+
+      {role === "ota" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            Occupational Therapist Assistant Information
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <InputField
+              id="state"
+              label="Licensed State(s)"
+              placeholder="e.g., NY, NJ, CA"
+            />
+            <InputField
+              id="availability"
+              label="Preferred Schedule"
+              placeholder="e.g., weekdays 4–7pm, weekends"
+            />
+          </div>
+          <TextareaField
+            id="expertise"
+            label="Your Experience & Interests"
+            placeholder="Tell us about your experience (e.g., pediatric OT, sensory integration, fine motor, feeding), populations you prefer, and if you're interested in remote or in-person work."
+          />
+        </div>
+      )}
+
+      {role === "pta" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            Physical Therapist Assistant Information
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <InputField
+              id="state"
+              label="Licensed State(s)"
+              placeholder="e.g., NY, NJ, CA"
+            />
+            <InputField
+              id="availability"
+              label="Preferred Schedule"
+              placeholder="e.g., weekdays 4–7pm, weekends"
+            />
+          </div>
+          <TextareaField
+            id="expertise"
+            label="Your Experience & Interests"
+            placeholder="Tell us about your experience (e.g., pediatric PT, orthopedics, neurological, sports therapy), populations you prefer, and if you're interested in remote or in-person work."
+          />
+        </div>
+      )}
+
+      {role === "school" && (
+        <div className="mt-6 grid gap-6 rounded-xl bg-neutral-50 p-6">
+          <h3 className="font-heading text-base font-medium text-neutral-800">
+            School / Organization Needs
+          </h3>
+          <InputField
+            id="orgName"
+            label="School/Organization Name"
+            placeholder="Your school or organization"
+          />
+          <TextareaField
+            id="need"
+            label="What support do you need?"
+            placeholder="E.g., temporary coverage, ongoing SEIT services, school-based therapy, evaluations, group sessions, etc."
+          />
+        </div>
+      )}
+
+      <TextareaField
+        id="message"
+        label="Additional Information"
+        placeholder="Any questions, cultural preferences, language needs, location details, or other relevant information"
+        className="mt-6"
+      />
+
+      {/* Status Messages */}
+      {submitStatus === 'success' && (
+        <div className="mt-6 rounded-xl bg-green-50 border border-green-200 p-4">
+          <p className="font-body text-sm text-green-800">
+            ✅ Thank you! Your message has been sent successfully. We'll be in touch within 1-2 business days.
+          </p>
+        </div>
+      )}
+      
+      {submitStatus === 'error' && (
+        <div className="mt-6 rounded-xl bg-red-50 border border-red-200 p-4">
+          <p className="font-body text-sm text-red-800">
+            ❌ Sorry, there was an error sending your message. Please try again or contact us directly.
+          </p>
+        </div>
+      )}
+
+      {/* Submit */}
+      <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+        <p className="font-body text-xs text-neutral-500">
+          We respect your privacy and will only use your information to connect you with our services.
+        </p>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 text-base font-semibold hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {isSubmitting ? 'Sending...' : 'Get Connected'}
+        </Button>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+      <SiteFooter />
+    </div>
+  );
+}
+
+/* ─────────── UI bits (kept super simple; no extra card/border noise) ─────────── */
+
+function SiteHeader() {
+  return (
+    <header className="sticky top-0 z-40 bg-gradient-to-r from-purple-50/80 via-pink-50/80 to-yellow-50/80 backdrop-blur-lg border-b border-purple-200/50 shadow-sm">
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="flex h-16 items-center justify-between">
+          <a href="#home" className="group flex items-center gap-2">
+            <span className="font-heading text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Beyond Speech</span>
+          </a>
+          <nav className="hidden md:block">
+            <ul className="flex items-center gap-6">
+              <li><a href="#families" className="font-body text-sm font-medium text-neutral-700 hover:text-brand hover:scale-110 transition-transform">Clients</a></li>
+              <li><a href="#slps" className="font-body text-sm font-medium text-neutral-700 hover:text-accent hover:scale-110 transition-transform">Providers</a></li>
+
+              <li><a href="#services" className="font-body text-sm font-medium text-neutral-700 hover:text-success hover:scale-110 transition-transform">Services</a></li>
+              <li><a href="#contact" className="font-body text-sm font-medium text-neutral-700 hover:text-info hover:scale-110 transition-transform">Contact</a></li>
+             <a href="#og-camp" className="font-body text-sm font-medium text-neutral-700 hover:text-sunny hover:scale-110 transition-transform">Programs</a>
+            </ul>
+          </nav>
+          <div className="hidden md:block">
+            <a href="#contact">
+              <Button className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 text-sm font-semibold hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all">Get Started</Button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+
+
+/* Smaller atoms */
+function Step({
+  n,
+  title,
+  desc,
+  color = "brand",
+}: {
+  n: number;
+  title: string;
+  desc: string;
+  color?: "brand" | "accent" | "success" | "info";
+}) {
+  const bg =
+    color === "accent"
+      ? "bg-accent"
+      : color === "success"
+      ? "bg-success"
+      : color === "info"
+      ? "bg-info"
+      : "bg-brand";
+
+  return (
+    <li className="text-center">
+      <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${bg} text-white text-base font-bold shadow-lg hover:scale-110 transition-transform`}>
+        {n}
+      </div>
+      <h3 className="font-heading text-base font-semibold">{title}</h3>
+      <p className="font-body mt-2 text-sm text-neutral-600">{desc}</p>
+    </li>
+  );
+}
+
+
+
+
+function InputBase({
+  id,
+  label,
+  type = "text",
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+}) {
+  return (
+    <div className="grid gap-1">
+      <label htmlFor={id} className="font-body text-sm">{label}</label>
+      <input
+        id={id}
+        name={id}
+        type={type}
+        placeholder={placeholder}
+        className="rounded-xl border px-3 py-2"
+      />
+    </div>
+  );
+}
+
+function InputField({
+  id,
+  label,
+  type = "text",
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+}) {
+  return (
+    <div className="grid gap-1">
+      <label htmlFor={id} className="font-body text-sm font-medium">
+        {label}
+      </label>
+      <input
+        id={id}
+        name={id}
+        type={type}
+        placeholder={placeholder}
+        className="rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-brand focus:ring-2 focus:ring-brand/30"
+      />
+    </div>
+  );
+}
+
+function TextareaField({
+  id,
+  label,
+  placeholder,
+  className = "",
+}: {
+  id: string;
+  label: string;
+  placeholder?: string;
+  className?: string;
+}) {
+  return (
+    <div className={`grid gap-1 ${className}`}>
+      <label htmlFor={id} className="font-body text-sm font-medium">
+        {label}
+      </label>
+      <textarea
+        id={id}
+        name={id}
+        placeholder={placeholder}
+        className="min-h-[100px] rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-brand focus:ring-2 focus:ring-brand/30"
+      />
+    </div>
+  );
+}
+/* --- Accurate Services (drop this where you want your Services section) --- */
+/* --- Accurate Services (drop this where you want your Services section) --- */
+
+
+
+/* small helper that matches your minimal style */
+function RateExact({ title, price, note }: { title: string; price: string; note?: string }) {
+  return (
+    <div className="rounded-2xl border border-neutral-200 p-6 shadow-sm">
+      <div className="font-heading text-base">{title}</div>
+      <div className="mt-1 text-2xl font-heading">{price}</div>
+      {note ? <p className="font-body mt-2 text-sm text-neutral-600">{note}</p> : null}
+    </div>
+  );
+}
+
+
+function TextareaBase({
+  id,
+  label,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  placeholder?: string;
+}) {
+  return (
+    <div className="grid gap-1">
+      <label htmlFor={id} className="font-body text-sm">{label}</label>
+      <textarea
+        id={id}
+        name={id}
+        placeholder={placeholder}
+        className="min-h-[100px] rounded-xl border px-3 py-2"
+      />
     </div>
   );
 }
