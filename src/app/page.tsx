@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Calendar, MapPin, Video } from "lucide-react";
 import { ServicesModern } from "@/components/ui/serviceModern";
 import { SiteFooter } from "@/components/ui/siteFooter";
-import emailjs from '@emailjs/browser';
+import { api } from '@/lib/api';
 
 /** Minimal, professional, playful */
 export default function BeyondSpeechLanding() {
@@ -46,13 +46,14 @@ export default function BeyondSpeechLanding() {
         }),
       };
 
-      // Send email using EmailJS
-      await emailjs.send(
-        'service_jwl18ey', // Service ID
-        'template_1uzi0bf', // Template ID
-        templateParams,
-        'NA5icxSu2RS9jACcV' // Public Key
-      );
+      // Send to backend API
+      await api.submitContact({
+        role,
+        name: templateParams.name,
+        email: templateParams.email,
+        phone: templateParams.phone,
+        message: templateParams.message,
+      });
 
       setSubmitStatus('success');
       // Reset form
