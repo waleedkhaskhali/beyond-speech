@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Check, Calendar, MapPin, Video, Globe2, ShieldCheck } from "lucide-react";
+import { Check, Calendar, MapPin, Video } from "lucide-react";
 import { ServicesModern } from "@/components/ui/serviceModern";
 import { SiteFooter } from "@/components/ui/siteFooter";
 import emailjs from '@emailjs/browser';
@@ -254,7 +254,7 @@ export default function BeyondSpeechLanding() {
         Get Started Today
       </h2>
       <p className="font-body mx-auto mt-3 max-w-xl text-neutral-600">
-        Whether you're seeking services or looking to join our provider network, we'd love to connect. We'll respond within 1–2 business days.
+        Whether you&apos;re seeking services or looking to join our provider network, we&apos;d love to connect. We&apos;ll respond within 1–2 business days.
       </p>
     </div>
 
@@ -268,7 +268,7 @@ export default function BeyondSpeechLanding() {
           id="role"
           className="mt-2 w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-brand focus:ring-2 focus:ring-brand/30"
           value={role}
-          onChange={(e) => setRole(e.target.value as any)}
+          onChange={(e) => setRole(e.target.value as "family" | "slp" | "school" | "ot" | "pt" | "ota" | "pta")}
         >
           <option value="family">Parent/Guardian</option>
           <option value="slp">Speech-Language Pathologist</option>
@@ -470,7 +470,7 @@ export default function BeyondSpeechLanding() {
       {submitStatus === 'success' && (
         <div className="mt-6 rounded-xl bg-green-50 border border-green-200 p-4">
           <p className="font-body text-sm text-green-800">
-            ✅ Thank you! Your message has been sent successfully. We'll be in touch within 1-2 business days.
+            ✅ Thank you! Your message has been sent successfully. We&apos;ll be in touch within 1-2 business days.
           </p>
         </div>
       )}
@@ -574,30 +574,6 @@ function Step({
 
 
 
-function InputBase({
-  id,
-  label,
-  type = "text",
-  placeholder,
-}: {
-  id: string;
-  label: string;
-  type?: string;
-  placeholder?: string;
-}) {
-  return (
-    <div className="grid gap-1">
-      <label htmlFor={id} className="font-body text-sm">{label}</label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        placeholder={placeholder}
-        className="rounded-xl border px-3 py-2"
-      />
-    </div>
-  );
-}
 
 function InputField({
   id,
@@ -657,35 +633,5 @@ function TextareaField({
 
 
 /* small helper that matches your minimal style */
-function RateExact({ title, price, note }: { title: string; price: string; note?: string }) {
-  return (
-    <div className="rounded-2xl border border-neutral-200 p-6 shadow-sm">
-      <div className="font-heading text-base">{title}</div>
-      <div className="mt-1 text-2xl font-heading">{price}</div>
-      {note ? <p className="font-body mt-2 text-sm text-neutral-600">{note}</p> : null}
-    </div>
-  );
-}
 
 
-function TextareaBase({
-  id,
-  label,
-  placeholder,
-}: {
-  id: string;
-  label: string;
-  placeholder?: string;
-}) {
-  return (
-    <div className="grid gap-1">
-      <label htmlFor={id} className="font-body text-sm">{label}</label>
-      <textarea
-        id={id}
-        name={id}
-        placeholder={placeholder}
-        className="min-h-[100px] rounded-xl border px-3 py-2"
-      />
-    </div>
-  );
-}
