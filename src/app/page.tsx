@@ -70,14 +70,14 @@ export default function BeyondSpeechLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-yellow-50 text-neutral-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-50 text-neutral-900">
       <SiteHeader />
 
-     <section id="home" className="relative overflow-hidden bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100">
+     <section id="home" className="relative overflow-hidden bg-gradient-to-br from-slate-100 via-blue-100 to-indigo-100">
       {/* Decorative blobs for liquid effect */}
       <div className="pointer-events-none absolute inset-0 opacity-40">
-        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-purple-300/50 blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 -right-32 h-80 w-80 rounded-full bg-pink-300/50 blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-slate-300/50 blur-3xl animate-pulse" />
+        <div className="absolute top-1/2 -right-32 h-80 w-80 rounded-full bg-indigo-300/50 blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
         <div className="absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-yellow-300/50 blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
       </div>
       {/* Parent with known height + relative positioning */}
@@ -112,7 +112,7 @@ export default function BeyondSpeechLanding() {
     </section>
 
       {/* HOW IT WORKS — clean steps, no borders/cards */}
- <section aria-labelledby="how" className="relative overflow-hidden bg-gradient-to-br from-yellow-100 via-orange-50 to-pink-100">
+ <section aria-labelledby="how" className="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-blue-100 to-cyan-100">
   {/* Decorative blobs */}
   <div className="pointer-events-none absolute inset-0 opacity-30">
     <div className="absolute top-10 -right-20 h-64 w-64 rounded-full bg-orange-200/60 blur-3xl" />
@@ -133,11 +133,11 @@ export default function BeyondSpeechLanding() {
 
 
       {/* FAMILIES — minimal content + illustration */}
-      <section id="families" className="relative overflow-hidden bg-gradient-to-br from-pink-100 via-rose-100 to-purple-100">
+      <section id="families" className="relative overflow-hidden bg-gradient-to-br from-cyan-100 via-teal-100 to-emerald-100">
         {/* Decorative blobs */}
         <div className="pointer-events-none absolute inset-0 opacity-30">
-          <div className="absolute -top-16 left-1/4 h-80 w-80 rounded-full bg-pink-200/60 blur-3xl" />
-          <div className="absolute bottom-20 -right-16 h-72 w-72 rounded-full bg-purple-200/60 blur-3xl" />
+          <div className="absolute -top-16 left-1/4 h-80 w-80 rounded-full bg-cyan-200/60 blur-3xl" />
+          <div className="absolute bottom-20 -right-16 h-72 w-72 rounded-full bg-emerald-200/60 blur-3xl" />
         </div>
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
           <div className="grid items-center gap-10 md:grid-cols-2">
@@ -169,7 +169,7 @@ export default function BeyondSpeechLanding() {
       </section>
 
       {/* SLPS — minimal content + illustration */}
-      <section id="slps" className="relative overflow-hidden bg-gradient-to-br from-purple-100 via-indigo-100 to-blue-100">
+      <section id="slps" className="relative overflow-hidden bg-gradient-to-br from-emerald-100 via-green-100 to-lime-100">
         {/* Decorative blobs */}
         <div className="pointer-events-none absolute inset-0 opacity-30">
           <div className="absolute top-20 -left-16 h-72 w-72 rounded-full bg-indigo-200/60 blur-3xl" />
@@ -205,7 +205,7 @@ export default function BeyondSpeechLanding() {
       </section>
 
       {/* OG CAMP — small, clean block */}
-      <section id="og-camp" className="relative overflow-hidden bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100">
+      <section id="og-camp" className="relative overflow-hidden bg-gradient-to-br from-lime-100 via-yellow-100 to-amber-100">
         {/* Decorative blobs */}
         <div className="pointer-events-none absolute inset-0 opacity-30">
           <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-cyan-200/60 blur-3xl" />
@@ -243,7 +243,7 @@ export default function BeyondSpeechLanding() {
       {/* RATES — simple, honest */}
     <ServicesModern />
       {/* CONTACT — slimmer form, mobile-first */}
-  <section id="contact" className="relative overflow-hidden bg-gradient-to-br from-teal-100 via-emerald-100 to-green-100">
+  <section id="contact" className="relative overflow-hidden bg-gradient-to-br from-amber-100 via-orange-100 to-red-100">
   {/* Decorative blobs */}
   <div className="pointer-events-none absolute inset-0 opacity-30">
     <div className="absolute top-20 -left-20 h-80 w-80 rounded-full bg-emerald-200/60 blur-3xl" />
@@ -259,7 +259,7 @@ export default function BeyondSpeechLanding() {
       </p>
     </div>
 
-    <form ref={formRef} onSubmit={handleSubmit} className="mt-10 rounded-2xl bg-white p-8 shadow-xl ring-2 ring-purple-200 hover:ring-purple-300 transition-all">
+    <form ref={formRef} onSubmit={handleSubmit} className="mt-10 rounded-2xl bg-white p-8 shadow-xl ring-2 ring-blue-200 hover:ring-blue-300 transition-all">
       {/* Role selector */}
       <div className="mb-6">
         <label htmlFor="role" className="font-body text-sm font-medium">
@@ -492,7 +492,7 @@ export default function BeyondSpeechLanding() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 text-base font-semibold hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-xl bg-blue-500 px-6 py-4 text-base font-semibold hover:bg-blue-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Sending...' : 'Get Connected'}
         </Button>
@@ -511,11 +511,18 @@ export default function BeyondSpeechLanding() {
 
 function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 bg-gradient-to-r from-purple-50/80 via-pink-50/80 to-yellow-50/80 backdrop-blur-lg border-b border-purple-200/50 shadow-sm">
+    <header className="sticky top-0 z-40 bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-lg border-b border-slate-200/50 shadow-sm">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex h-16 items-center justify-between">
           <a href="#home" className="group flex items-center gap-2">
-            <span className="font-heading text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Beyond Speech</span>
+            <Image 
+              src="/beyond speech logo.png" 
+              alt="Beyond Speech" 
+              width={32} 
+              height={32} 
+              className="h-8 w-8 object-contain"
+            />
+            <span className="font-heading text-xl font-bold text-blue-600">Beyond Speech</span>
           </a>
           <nav className="hidden md:block">
             <ul className="flex items-center gap-6">
@@ -529,7 +536,7 @@ function SiteHeader() {
           </nav>
           <div className="hidden md:block">
             <a href="#contact">
-              <Button className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 text-sm font-semibold hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all">Get Started</Button>
+              <Button className="rounded-full bg-blue-500 px-5 py-2 text-sm font-semibold hover:bg-blue-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all">Get Started</Button>
             </a>
           </div>
         </div>

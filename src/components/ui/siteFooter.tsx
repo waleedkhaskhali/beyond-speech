@@ -4,25 +4,25 @@ import { Mail, Phone, MapPin, Instagram, Facebook, Linkedin, ArrowUpRight } from
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden border-t-2 border-teal-200/50 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+    <footer className="relative overflow-hidden border-t-2 border-red-200/50 bg-gradient-to-br from-red-50 via-orange-50 to-amber-50">
       {/* Decorative blobs */}
       <div className="pointer-events-none absolute inset-0 opacity-20">
-        <div className="absolute top-10 right-1/4 h-64 w-64 rounded-full bg-teal-200/60 blur-3xl" />
-        <div className="absolute -bottom-10 left-10 h-72 w-72 rounded-full bg-cyan-200/60 blur-3xl" />
+        <div className="absolute top-10 right-1/4 h-64 w-64 rounded-full bg-red-200/60 blur-3xl" />
+        <div className="absolute -bottom-10 left-10 h-72 w-72 rounded-full bg-orange-200/60 blur-3xl" />
       </div>
       <div className="mx-auto max-w-6xl px-4 py-12">
         {/* Top: brand + cta blurb */}
         <div className="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
           <a href="#home" className="group inline-flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 text-white font-bold shadow-lg transition-transform group-hover:scale-110 group-hover:rotate-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-red-500 text-white font-bold shadow-lg transition-transform group-hover:scale-110 group-hover:rotate-3">
               BS
             </div>
-            <span className="font-heading text-lg font-bold tracking-tight bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Beyond Speech</span>
+            <span className="font-heading text-lg font-bold tracking-tight text-blue-600">Beyond Speech</span>
           </a>
 
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-3 text-white font-semibold shadow-lg transition hover:from-purple-600 hover:to-pink-600 hover:shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-white font-semibold shadow-lg transition hover:bg-blue-600 hover:shadow-xl hover:scale-105"
           >
             Get Started <ArrowUpRight className="h-4 w-4" />
           </a>

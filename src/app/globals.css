@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-/* Tailwind v4 design tokens - Fun & Playful Palette */
+/* Tailwind v4 design tokens - Primary Color Palette */
 @theme {
-  --color-brand: #a855f7;        /* vibrant purple */
-  --color-brand-light: #c084fc;  /* lighter purple */
-  --color-accent: #ec4899;       /* hot pink */
-  --color-accent-light: #f472b6; /* lighter pink */
-  --color-success: #10b981;      /* bright emerald */
-  --color-info: #06b6d4;         /* cyan */
-  --color-sunny: #fbbf24;        /* sunny yellow */
+  --color-brand: #2563eb;        /* primary blue */
+  --color-brand-light: #3b82f6;  /* lighter blue */
+  --color-accent: #dc2626;       /* primary red */
+  --color-accent-light: #ef4444; /* lighter red */
+  --color-success: #16a34a;      /* primary green */
+  --color-info: #0891b2;         /* teal */
+  --color-sunny: #ea580c;        /* orange */
 }
 
 /* Base tweaks */

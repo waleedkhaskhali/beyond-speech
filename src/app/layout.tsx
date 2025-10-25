@@ -18,6 +18,9 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: "Beyond Speech",
   description: "Culturally responsive speech therapy — remote or in person.",
+  icons: {
+    icon: "/beyond speech logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

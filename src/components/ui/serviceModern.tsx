@@ -55,12 +55,12 @@ const services = [
 
 export function ServicesModern() {
   return (
-    <section id="services" className="relative overflow-hidden bg-gradient-to-br from-green-50 via-emerald-50 to-cyan-50">
+    <section id="services" className="relative overflow-hidden bg-gradient-to-br from-lime-50 via-yellow-50 to-amber-50">
       {/* Decorative blobs for liquid effect */}
       <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute -top-20 left-1/4 h-96 w-96 rounded-full bg-emerald-200/60 blur-3xl" />
-        <div className="absolute top-1/2 -right-24 h-80 w-80 rounded-full bg-cyan-200/60 blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-green-200/60 blur-3xl" />
+        <div className="absolute -top-20 left-1/4 h-96 w-96 rounded-full bg-lime-200/60 blur-3xl" />
+        <div className="absolute top-1/2 -right-24 h-80 w-80 rounded-full bg-yellow-200/60 blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-amber-200/60 blur-3xl" />
       </div>
 
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
@@ -80,7 +80,7 @@ export function ServicesModern() {
         <div className="mt-10 text-center">
           <a
             href="#contact"
-            className="inline-block rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 text-white font-semibold shadow-lg hover:from-purple-600 hover:to-pink-600 hover:shadow-xl hover:scale-105 transition-all"
+            className="inline-block rounded-xl bg-blue-500 px-6 py-4 text-white font-semibold shadow-lg hover:bg-blue-600 hover:shadow-xl hover:scale-105 transition-all"
           >
             Request Services
           </a>
