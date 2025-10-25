@@ -15,5 +15,6 @@
     "NEXT_PUBLIC_API_URL": "@next_public_api_url"
   },
   "installCommand": "npm install",
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next"
 }
