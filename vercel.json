@@ -6,15 +6,9 @@
       "use": "@vercel/next"
     }
   ],
-  "functions": {
-    "src/app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "env": {
     "NEXT_PUBLIC_API_URL": "@next_public_api_url"
   },
   "installCommand": "npm install",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next"
+  "buildCommand": "npm run build"
 }
